@@ -7,6 +7,7 @@ library(rstatix)
 #### WAX TRAITS ANALYSIS GREENHOUSE EXPERIMENT ####
 exp1.df <- read.csv("FL Exp 1 Wax Stats 060424")
 
+# Normality was assumed via the central limit theorem
 # Levene Tests on Raw Data
 exp1.df %>% levene_test(Wax_Total ~ Ecozone*Year*Treatment)
 exp1.df %>% levene_test(Diketone ~ Ecozone*Year*Treatment)
@@ -15,10 +16,67 @@ exp1.df %>% levene_test(Alcohol ~ Ecozone*Year*Treatment)
 exp1.df %>% levene_test(Acid ~ Ecozone*Year*Treatment)
 
 # All data passed the equal variance tests
-# 3-way ANOVA on Raw Data
 
+### 3-way ANOVA on Raw Data ###
 exp1.df %>% anova_test(Wax_Total ~ Ecozone*Year*Treatment)
 exp1.df %>% anova_test(Diketone ~ Ecozone*Year*Treatment)
 exp1.df %>% anova_test(Odd_Alk ~ Ecozone*Year*Treatment)
 exp1.df %>% anova_test(Alcohol ~ Ecozone*Year*Treatment)
 exp1.df %>% anova_test(Acid ~ Ecozone*Year*Treatment)
+
+#### MORPH TRAITS ANALYSIS GREENHOUSE EXPERIMENT ####
+morph.df <- read.csv("Drought Exp 1 Morph 111523.csv")
+
+# Normality was assumed via the central limit theorem
+# Levene Tests on Raw Data
+
+### Levene Test on Raw Data ###
+morph.df %>% levene_test(Total_Plant_Height ~ Ecozone*Year*Treatment)
+morph.df %>% levene_test(Tillering_Count ~ Ecozone*Year*Treatment)
+morph.df %>% levene_test(Head_Length ~ Ecozone*Year*Treatment)
+morph.df %>% levene_test(Head_Count_Avg ~ Ecozone*Year*Treatment)
+morph.df %>% levene_test(Days_to_flowering ~ Ecozone*Year*Treatment)
+
+# All variables except Total Plant Height passed the Levene Test
+# Tried the Bartlett Test next
+
+### Bartlett Test on Total Plant Height Data ###
+bartlett.test(Total_Plant_Height ~ interaction(Ecozone, Year, Treatment), data = morph.df)
+
+# Total Plant Height did not pass the Bartlett Test either
+# Retried with log transformed Total Plant Height data, but this still did not pass the equal variance tests
+# A non parametric Kruskal-Wallis test was used instead
+
+### Kruskal-Wallis Tests ###
+# By Treatment
+kruskal.test(Total_Plant_Height ~ Treatment, data = morph.df)
+# By Ecozone
+kruskal.test(Total_Plant_Height ~ Ecozone, data = morph.df)
+# By Year
+kruskal.test(Total_Plant_Height ~ Year, data = morph.df)
+
+### 3 way ANOVA on Raw Data for All Other Variables ###
+morph.df %>% anova_test(Tillering_Count ~ Ecozone*Year*Treatment)
+morph.df %>% anova_test(Head_Length ~ Ecozone*Year*Treatment)
+morph.df %>% anova_test(Head_Count_Avg ~ Ecozone*Year*Treatment)
+morph.df %>% anova_test(Days_to_flowering ~ Ecozone*Year*Treatment)
+
+#### FIELD EXPERIMENT ####
+field.df <- read.csv("Field Experiment East West Stats 2.csv")
+
+# Normality was assumed via the central limit theorem
+### Levene Tests on Raw Data ###
+field.df %>% levene_test(Total_Wax ~ Ecozone*Year_2)
+field.df %>% levene_test(Dione ~ Ecozone*Year_2)
+field.df %>% levene_test(Odd_Alk ~ Ecozone*Year_2)
+field.df %>% levene_test(Alcohol ~ Ecozone*Year_2)
+field.df %>% levene_test(Acid ~ Ecozone*Year_2)
+
+#All variables passed the Levene test
+
+### 3-way ANOVA on Raw Data ###
+field.df %>% anova_test(Total_Wax ~ Ecozone*Year_2)
+field.df %>% anova_test(Dione ~ Ecozone*Year_2)
+field.df %>% anova_test(Odd_Alk ~ Ecozone*Year_2)
+field.df %>% anova_test(Alcohol ~ Ecozone*Year_2)
+field.df %>% anova_test(Acid ~ Ecozone*Year_2)
