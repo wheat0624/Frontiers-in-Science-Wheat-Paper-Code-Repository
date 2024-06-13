@@ -1,0 +1,24 @@
+#### Install Packages ####
+install.packages("dplyr")
+install.packages("rstatix")
+library(dplyr)
+library(rstatix)
+
+#### WAX TRAITS ANALYSIS GREENHOUSE EXPERIMENT ####
+exp1.df <- read.csv("FL Exp 1 Wax Stats 060424")
+
+# Levene Tests on Raw Data
+exp1.df %>% levene_test(Wax_Total ~ Ecozone*Year*Treatment)
+exp1.df %>% levene_test(Diketone ~ Ecozone*Year*Treatment)
+exp1.df %>% levene_test(Odd_Alk ~ Ecozone*Year*Treatment)
+exp1.df %>% levene_test(Alcohol ~ Ecozone*Year*Treatment)
+exp1.df %>% levene_test(Acid ~ Ecozone*Year*Treatment)
+
+# All data passed the equal variance tests
+# 3-way ANOVA on Raw Data
+
+exp1.df %>% anova_test(Wax_Total ~ Ecozone*Year*Treatment)
+exp1.df %>% anova_test(Diketone ~ Ecozone*Year*Treatment)
+exp1.df %>% anova_test(Odd_Alk ~ Ecozone*Year*Treatment)
+exp1.df %>% anova_test(Alcohol ~ Ecozone*Year*Treatment)
+exp1.df %>% anova_test(Acid ~ Ecozone*Year*Treatment)
