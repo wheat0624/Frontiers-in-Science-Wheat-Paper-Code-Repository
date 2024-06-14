@@ -8,7 +8,8 @@ library(rstatix)
 exp1.df <- read.csv("FL Exp 1 Wax Stats 060424")
 
 # Normality was assumed via the central limit theorem
-# Levene Tests on Raw Data
+
+### Levene Test on Raw Data ###
 exp1.df %>% levene_test(Wax_Total ~ Ecozone*Year*Treatment)
 exp1.df %>% levene_test(Diketone ~ Ecozone*Year*Treatment)
 exp1.df %>% levene_test(Odd_Alk ~ Ecozone*Year*Treatment)
@@ -28,7 +29,6 @@ exp1.df %>% anova_test(Acid ~ Ecozone*Year*Treatment)
 morph.df <- read.csv("Drought Exp 1 Morph 111523.csv")
 
 # Normality was assumed via the central limit theorem
-# Levene Tests on Raw Data
 
 ### Levene Test on Raw Data ###
 morph.df %>% levene_test(Total_Plant_Height ~ Ecozone*Year*Treatment)
