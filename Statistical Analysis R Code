@@ -65,6 +65,7 @@ morph.df %>% anova_test(Days_to_flowering ~ Ecozone*Year*Treatment)
 field.df <- read.csv("Field Experiment East West Stats 2.csv")
 
 # Normality was assumed via the central limit theorem
+
 ### Levene Tests on Raw Data ###
 field.df %>% levene_test(Total_Wax ~ Ecozone*Year_2)
 field.df %>% levene_test(Dione ~ Ecozone*Year_2)
